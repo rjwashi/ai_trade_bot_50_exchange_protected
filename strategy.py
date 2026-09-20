@@ -3,8 +3,13 @@ import numpy as np
 
 def add_indicators(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
-    close = df["close"].astype(float)
-    volume = df["volume"].astype(float)
+
+    # Enforce numeric types (critical)
+    df["close"] = pd.to_numeric(df["close"], errors="coerce")
+    df["volume"] = pd.to_numeric(df["volume"], errors="coerce")
+
+    close = df["close"]
+    volume = df["volume"]
 
     df["ema20"] = close.ewm(span=20, adjust=False).mean()
     df["ema50"] = close.ewm(span=50, adjust=False).mean()
@@ -21,10 +26,17 @@ def add_indicators(df: pd.DataFrame) -> pd.DataFrame:
     ema26 = close.ewm(span=26, adjust=False).mean()
     df["macd"] = ema12 - ema26
     df["macd_signal"] = df["macd"].ewm(span=9, adjust=False).mean()
+
     df["vol_avg20"] = volume.rolling(20).mean()
+
     return df
 
+
 def score_setup(df: pd.DataFrame) -> dict:
+    # Normalize numeric fields BEFORE indicators
+    df["close"] = pd.to_numeric(df["close"], errors="coerce")
+    df["volume"] = pd.to_numeric(df["volume"], errors="coerce")
+
     if len(df) < 60:
         return {"score": 0, "reason": "not enough candles"}
 
@@ -50,6 +62,7 @@ def score_setup(df: pd.DataFrame) -> dict:
         score += 8
         reasons.append("MACD bullish")
 
+    # Now guaranteed safe: both are floats
     if pd.notna(x["vol_avg20"]) and x["volume"] > x["vol_avg20"]:
         score += 15
         reasons.append("volume above 20-bar average")

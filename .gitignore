@@ -1,0 +1,70 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.pkl
+*.pickle
+
+# --- Virtual Environments ---
+venv/
+.env/
+.env.bak/
+.venv/
+env/
+ENV/
+
+# --- Secrets ---
+*.env
+*.key
+*.pem
+*.crt
+*.der
+*.p12
+secrets.json
+
+# --- Trading Bot Data ---
+data/
+datasets/
+backtests/
+logs/
+*.log
+*.csv
+*.db
+*.sqlite
+*.sqlite3
+
+# --- Cache ---
+.cache/
+*.cache
+*.tmp
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Build / Packaging ---
+build/
+dist/
+*.egg-info/
+*.egg
+
+# --- IDE / Editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS Files ---
+.DS_Store
+Thumbs.db
+
+# --- Model / Checkpoints ---
+checkpoints/
+models/
+*.pt
+*.pth
+*.bin
+
+# --- Docker ---
+docker-data/
